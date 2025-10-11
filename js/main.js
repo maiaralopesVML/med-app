@@ -1,4 +1,5 @@
 import { PetForm } from "./components/PetForm.js";
+import { MedicationList } from "./components/MedicationList.js";
 
 // Name variants
 const app = document.getElementById("app");
@@ -25,3 +26,5 @@ app.appendChild(main);
 // Create and append the pet form to the pet form section
 const formElement = PetForm();
 petFormSection.appendChild(formElement);
+const medicationElement = MedicationList();
+petFormSection.appendChild(medicationElement);
