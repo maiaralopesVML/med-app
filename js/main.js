@@ -1,18 +1,27 @@
-const app = document.getElementById("app");
+import { PetForm } from "./components/PetForm.js";
 
+// Name variants
+const app = document.getElementById("app");
 const header = document.createElement("header");
 const main = document.createElement("main");
-const petForm = document.createElement("section");
-const petList = document.createElement("section");
+const petFormSection = document.createElement("section");
+const petListSection = document.createElement("section");
+
+// Add IDs and content
 header.id = "header";
 main.id = "main";
-petForm.id = "pet-form-section";
-petList.id = "pet-list-section";
+petFormSection.id = "pet-form-section";
+petListSection.id = "pet-list-section";
 header.textContent = "Dog Medication Tracker";
-petForm.textContent = "Pet Form Section";
-petList.textContent = "Pet List Section";
+petFormSection.textContent = "Pet Form Section";
+petListSection.textContent = "Pet List Section";
 
-main.appendChild(petForm);
-main.appendChild(petList);
+// Append layout elements to the DOM from inside out
+main.appendChild(petFormSection);
+main.appendChild(petListSection);
 app.appendChild(header);
 app.appendChild(main);
+
+// Create and append the pet form to the pet form section
+const formElement = PetForm();
+petFormSection.appendChild(formElement);
