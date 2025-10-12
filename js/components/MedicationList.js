@@ -1,6 +1,8 @@
 export function MedicationList() {
   const medForm = document.createElement("form");
-  function createInput(labelText, type, id, readOnly = false) {
+  medForm.id = "medication-form";
+  const today = new Date().toISOString().split("T")[0];
+  function createInput(labelText, type, id, readOnly = false, value = "") {
     const label = document.createElement("label");
     label.htmlFor = id;
     label.textContent = labelText;
@@ -8,7 +10,11 @@ export function MedicationList() {
     const input = document.createElement("input");
     input.type = type;
     input.id = id;
-    if (readOnly) input.readOnly = true;
+    if (readOnly) {
+      input.readOnly = true;
+      input.setAttribute("aria-readonly", "true");
+    }
+    if (value !== "") input.value = value;
 
     const container = document.createElement("div");
     container.appendChild(label);
@@ -29,6 +35,16 @@ export function MedicationList() {
   submitButton.id = "submit-button";
   submitButton.type = "submit";
   submitButton.textContent = "Submit";
+
+  const newPrescriptionButton = document.createElement("button");
+  newPrescriptionButton.id = "new-prescription-button";
+  newPrescriptionButton.type = "button";
+  newPrescriptionButton.textContent = "New Prescription";
+
+  const prescriptionEnded = document.createElement("button");
+  prescriptionEnded.id = "prescription-ended-button";
+  prescriptionEnded.type = "button";
+  prescriptionEnded.textContent = "Prescription Ended";
 
   const medicationInfoFieldset = createFieldset("Medication Information");
   medicationInfoFieldset.appendChild(
@@ -67,19 +83,23 @@ export function MedicationList() {
     createInput("Repetitions", "number", "med-prescription-repetitions")
   );
   prescriptionFieldset.appendChild(
-    createInput("Total", "number", "med-prescription-total", true)
+    createInput("Total", "number", "med-prescription-total", true, 0)
   );
   prescriptionFieldset.appendChild(
     createInput(
       "Estimated Next Order Date",
       "date",
       "med-prescription-next-order",
-      true
+      true,
+      today
     )
   );
 
+  prescriptionFieldset.appendChild(prescriptionEnded);
+
   medForm.appendChild(medicationInfoFieldset);
   medForm.appendChild(dosageFieldset);
+  medForm.appendChild(newPrescriptionButton);
   medForm.appendChild(prescriptionFieldset);
   medForm.appendChild(submitButton);
 
