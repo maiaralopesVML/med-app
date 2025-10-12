@@ -57,7 +57,7 @@ export function MedicationList() {
     createInput(
       "Prescription Expiration Date",
       "date",
-      "med-prescription-exiration"
+      "med-prescription-expiration"
     )
   );
   prescriptionFieldset.appendChild(
