@@ -1,4 +1,8 @@
-import { createInput, createFieldset } from "../utils/domHelper.js";
+import {
+  createInput,
+  createFieldset,
+  createInputWithSelect,
+} from "../utils/domHelper.js";
 
 export function PrescriptionDetails() {
   const prescriptionForm = document.createElement("form");
@@ -22,7 +26,12 @@ export function PrescriptionDetails() {
     )
   );
   prescriptionFieldset.appendChild(
-    createInput("Amount", "number", "med-prescription-amount")
+    createInputWithSelect("Amount", "number", "med-prescription-amount", [
+      "mg",
+      "ml",
+      "pills",
+      "boxes",
+    ])
   );
   prescriptionFieldset.appendChild(
     createInput("Repetitions", "number", "med-prescription-repetitions")

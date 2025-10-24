@@ -27,3 +27,16 @@ export function createFieldset(legendText) {
 
   return fieldset;
 }
+
+export function createInputWithSelect(labelText, type, id, array = []) {
+  const container = createInput(labelText, type, id);
+  const select = document.createElement("select");
+  array.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option;
+    optionElement.textContent = option;
+    select.appendChild(optionElement);
+  });
+  container.appendChild(select);
+  return container;
+}
