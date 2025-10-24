@@ -65,13 +65,13 @@ export function MedicationList() {
     ])
   );
 
-  const addAnotherDose = document.createElement("button");
-  addAnotherDose.id = "add-another-dose-button";
-  addAnotherDose.type = "button";
-  addAnotherDose.textContent = "Add Another Dose";
-  dosageFieldset.appendChild(addAnotherDose);
+  const addAnotherDoseButton = document.createElement("button");
+  addAnotherDoseButton.id = "add-another-dose-button";
+  addAnotherDoseButton.type = "button";
+  addAnotherDoseButton.textContent = "Add Another Dose";
+  dosageFieldset.appendChild(addAnotherDoseButton);
 
-  addAnotherDose.addEventListener("click", () => {
+  addAnotherDoseButton.addEventListener("click", () => {
     dosageFieldset.appendChild(
       createInputWithSelectAndTime(
         "Extra Dose",
@@ -82,10 +82,18 @@ export function MedicationList() {
     );
   });
 
+  const prescriptionsList = document.createElement("div");
+  prescriptionsList.id = "prescriptions-list";
+
+  newPrescriptionButton.addEventListener("click", () => {
+    prescriptionsList.appendChild(PrescriptionDetails());
+  });
+
   medForm.appendChild(medicationInfoFieldset);
   medForm.appendChild(dosageFieldset);
   medForm.appendChild(newPrescriptionButton);
-  medForm.appendChild(PrescriptionDetails());
+  prescriptionsList.appendChild(PrescriptionDetails());
+  medForm.appendChild(prescriptionsList);
   medForm.appendChild(submitButton);
 
   return medForm;
