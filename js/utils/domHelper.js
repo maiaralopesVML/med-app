@@ -40,3 +40,16 @@ export function createInputWithSelect(labelText, type, id, array = []) {
   container.appendChild(select);
   return container;
 }
+
+export function createInputWithSelectAndTime(labelText, type, id, array = []) {
+  const container = createInputWithSelect(labelText, type, id, array);
+  const timeInput = document.createElement("input");
+  timeInput.type = "time";
+  timeInput.id = `${id}-time`;
+  const timeLabel = document.createElement("label");
+  timeLabel.htmlFor = timeInput.id;
+  timeLabel.textContent = "at";
+  container.appendChild(timeLabel);
+  container.appendChild(timeInput);
+  return container;
+}

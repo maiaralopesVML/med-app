@@ -2,6 +2,7 @@ import {
   createInput,
   createFieldset,
   createInputWithSelect,
+  createInputWithSelectAndTime,
 } from "../utils/domHelper.js";
 import { PrescriptionDetails } from "./PrescriptionDetails.js";
 
@@ -43,17 +44,43 @@ export function MedicationList() {
   dosageFieldset.appendChild(oneTimeDoseInput);
 
   dosageFieldset.appendChild(
-    createInput("Morning Dose", "number", "med-morning")
+    createInputWithSelect("Morning Dose", "number", "med-morning", [
+      "mg",
+      "ml",
+      "pills",
+    ])
   );
   dosageFieldset.appendChild(
-    createInput("Afternoon Dose", "number", "med-afternoon")
+    createInputWithSelect("Afternoon Dose", "number", "med-afternoon", [
+      "mg",
+      "ml",
+      "pills",
+    ])
   );
   dosageFieldset.appendChild(
-    createInput("Evening Dose", "number", "med-evening")
+    createInputWithSelect("Evening Dose", "number", "med-evening", [
+      "mg",
+      "ml",
+      "pills",
+    ])
   );
-  dosageFieldset.appendChild(
-    createInput("Additional Doses", "number", "med-additiona-doses")
-  );
+
+  const addAnotherDose = document.createElement("button");
+  addAnotherDose.id = "add-another-dose-button";
+  addAnotherDose.type = "button";
+  addAnotherDose.textContent = "Add Another Dose";
+  dosageFieldset.appendChild(addAnotherDose);
+
+  addAnotherDose.addEventListener("click", () => {
+    dosageFieldset.appendChild(
+      createInputWithSelectAndTime(
+        "Extra Dose",
+        "number",
+        `med-dose-${dosageFieldset.childElementCount + 1}`,
+        ["mg", "ml", "pills"]
+      )
+    );
+  });
 
   medForm.appendChild(medicationInfoFieldset);
   medForm.appendChild(dosageFieldset);
