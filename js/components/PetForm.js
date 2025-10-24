@@ -3,6 +3,8 @@ import { createInput, createFieldset } from "../utils/domHelper.js";
 export function PetForm() {
   const petForm = document.createElement("form");
   petForm.id = "pet-form";
+  const conditionsList = document.createElement("div");
+  conditionsList.classList.add("conditions-list");
 
   const informationFieldset = createFieldset("Pet Information");
   informationFieldset.appendChild(createInput("Pet Name", "text", "pet-name"));
@@ -14,8 +16,8 @@ export function PetForm() {
   );
 
   const conditionsFieldset = createFieldset("Conditions/Diseases");
-  conditionsFieldset.appendChild(
-    createInput("Condition", "text", "pet-condition")
+  conditionsList.appendChild(
+    createInput("Condition", "text", "pet-condition-1")
   );
 
   const petAdditionalConditionButton = document.createElement("button");
@@ -23,6 +25,16 @@ export function PetForm() {
   petAdditionalConditionButton.type = "button";
   petAdditionalConditionButton.textContent = "Add Another Condition";
 
+  petAdditionalConditionButton.addEventListener("click", () => {
+    const newConditionInput = createInput(
+      "Condition",
+      "text",
+      `pet-condition-${conditionsFieldset.childElementCount + 1}`
+    );
+    conditionsList.appendChild(newConditionInput);
+  });
+
+  conditionsFieldset.appendChild(conditionsList);
   conditionsFieldset.appendChild(petAdditionalConditionButton);
   petForm.appendChild(informationFieldset);
   petForm.appendChild(conditionsFieldset);
