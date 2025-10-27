@@ -1,3 +1,11 @@
+export function createFieldset(legendText) {
+  const fieldset = document.createElement("fieldset");
+  const legend = document.createElement("legend");
+  legend.textContent = legendText;
+  fieldset.appendChild(legend);
+
+  return fieldset;
+}
 export function createInput(labelText, type, id, readOnly = false, value = "") {
   const label = document.createElement("label");
   label.htmlFor = id;
@@ -19,15 +27,6 @@ export function createInput(labelText, type, id, readOnly = false, value = "") {
   return container;
 }
 
-export function createFieldset(legendText) {
-  const fieldset = document.createElement("fieldset");
-  const legend = document.createElement("legend");
-  legend.textContent = legendText;
-  fieldset.appendChild(legend);
-
-  return fieldset;
-}
-
 export function createInputWithSelect(labelText, type, id, array = []) {
   const container = createInput(labelText, type, id);
   const select = document.createElement("select");
@@ -41,7 +40,12 @@ export function createInputWithSelect(labelText, type, id, array = []) {
   return container;
 }
 
-export function createInputWithSelectAndTime(labelText, type, id, array = []) {
+export function createInputWithSelectTimeAndDelete(
+  labelText,
+  type,
+  id,
+  array = []
+) {
   const container = createInputWithSelect(labelText, type, id, array);
   const timeInput = document.createElement("input");
   timeInput.type = "time";
@@ -49,7 +53,24 @@ export function createInputWithSelectAndTime(labelText, type, id, array = []) {
   const timeLabel = document.createElement("label");
   timeLabel.htmlFor = timeInput.id;
   timeLabel.textContent = "at";
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.id = `delete-${id}-button`;
+  deleteButton.textContent = "Delete";
+  deleteButton.addEventListener("click", () => container.remove());
   container.appendChild(timeLabel);
   container.appendChild(timeInput);
+  container.appendChild(deleteButton);
+  return container;
+}
+
+export function createInputWithDeleteButton(labelText, type, id) {
+  const container = createInput(labelText, type, id);
+  const deleteButton = document.createElement("button");
+  deleteButton.type = "button";
+  deleteButton.id = `delete-${id}-button`;
+  deleteButton.textContent = "Delete";
+  container.appendChild(deleteButton);
+  deleteButton.addEventListener("click", () => container.remove());
   return container;
 }

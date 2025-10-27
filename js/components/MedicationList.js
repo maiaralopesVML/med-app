@@ -2,7 +2,7 @@ import {
   createInput,
   createFieldset,
   createInputWithSelect,
-  createInputWithSelectAndTime,
+  createInputWithSelectTimeAndDelete,
 } from "../utils/domHelper.js";
 import { PrescriptionDetails } from "./PrescriptionDetails.js";
 
@@ -73,7 +73,7 @@ export function MedicationList() {
 
   addAnotherDoseButton.addEventListener("click", () => {
     dosageFieldset.appendChild(
-      createInputWithSelectAndTime(
+      createInputWithSelectTimeAndDelete(
         "Extra Dose",
         "number",
         `med-dose-${dosageFieldset.childElementCount + 1}`,

@@ -1,5 +1,9 @@
 // PetForm.js — creates and returns the pet form section
-import { createInput, createFieldset } from "../utils/domHelper.js";
+import {
+  createInput,
+  createFieldset,
+  createInputWithDeleteButton,
+} from "../utils/domHelper.js";
 export function PetForm() {
   const petForm = document.createElement("form");
   petForm.id = "pet-form";
@@ -26,7 +30,7 @@ export function PetForm() {
   petAdditionalConditionButton.textContent = "Add Another Condition";
 
   petAdditionalConditionButton.addEventListener("click", () => {
-    const newConditionInput = createInput(
+    const newConditionInput = createInputWithDeleteButton(
       "Condition",
       "text",
       `pet-condition-${conditionsFieldset.childElementCount + 1}`
