@@ -67,12 +67,20 @@ export function PrescriptionDetails() {
           el.setAttribute("aria-disabled", "true");
         }
       });
+    reactivatePrescriptionButton.disabled = false;
+    reactivatePrescriptionButton.classList.remove("hidden");
+    reactivatePrescriptionButton.removeAttribute("aria-disabled");
+    reactivatePrescriptionButton.removeAttribute("aria-hidden");
   });
 
   const reactivatePrescriptionButton = document.createElement("button");
   reactivatePrescriptionButton.id = "reactivate-prescription-button";
   reactivatePrescriptionButton.type = "button";
   reactivatePrescriptionButton.textContent = "Reactivate Prescription";
+  reactivatePrescriptionButton.disabled = true;
+  reactivatePrescriptionButton.setAttribute("aria-disabled", "true");
+  reactivatePrescriptionButton.classList.add("hidden");
+  reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
 
   reactivatePrescriptionButton.addEventListener("click", () => {
     prescriptionFieldset.classList.remove("inactive");
@@ -83,8 +91,16 @@ export function PrescriptionDetails() {
     prescriptionFieldset
       .querySelectorAll("input, select, button")
       .forEach((el) => {
-        el.disabled = false;
+        if (el.id === "reactivate-prescription-button") {
+          el.disabled = true;
+          el.setAttribute("aria-disabled", "true");
+        } else {
+          el.disabled = false;
+          el.removeAttribute("aria-disabled");
+        }
       });
+    reactivatePrescriptionButton.classList.add("hidden");
+    reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
   });
 
   deletePrescriptionButton.addEventListener("click", () => {
