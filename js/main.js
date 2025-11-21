@@ -1,30 +1,38 @@
 import { PetForm } from "./components/PetForm.js";
 import { MedicationList } from "./components/MedicationList.js";
 
-// Name variants
-const app = document.getElementById("app");
-const header = document.createElement("header");
-const main = document.createElement("main");
-const petFormSection = document.createElement("section");
-const petListSection = document.createElement("section");
 
-// Add IDs and content
-header.id = "header";
-main.id = "main";
-petFormSection.id = "pet-form-section";
-petListSection.id = "pet-list-section";
-header.textContent = "Dog Medication Tracker";
-petFormSection.textContent = "Pet Form Section";
-petListSection.textContent = "Pet List Section";
+function renderFormPage() {
+    const container = document.createElement("div");
 
-// Append layout elements to the DOM from inside out
-main.appendChild(petFormSection);
-main.appendChild(petListSection);
-app.appendChild(header);
-app.appendChild(main);
+    const masterForm = document.createElement("form");
+    masterForm.id = "pet-form";
 
-// Create and append the pet form to the pet form section
-const formElement = PetForm();
-petFormSection.appendChild(formElement);
-const medicationElement = MedicationList();
-petFormSection.appendChild(medicationElement);
+    masterForm.appendChild(PetForm());       // returns fieldsets, not a form
+    masterForm.appendChild(MedicationList()); // returns fieldsets, not a form
+
+    const submitButton = document.createElement("button");
+    submitButton.type = "submit";
+    submitButton.textContent = "Save";
+
+    masterForm.appendChild(submitButton);
+
+    masterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const allData = collectAllDataFromPage(); // you’ll build this
+
+        renderPetCardPage(allData);
+    });
+
+    container.appendChild(masterForm);
+    renderView(container);
+}
+
+function renderView(contentNode) {
+    const app = document.getElementById("app");
+    app.innerHTML = "";
+    app.appendChild(contentNode);
+}
+
+renderFormPage();
