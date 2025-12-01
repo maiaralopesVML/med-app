@@ -77,3 +77,9 @@ export function createInputWithDeleteButton(labelText, type, id) {
   deleteButton.addEventListener("click", () => container.remove());
   return container;
 }
+
+export function formatDate(dateString) {
+  if (!dateString) return "";
+  const [year, month, day] = dateString.split("-");
+  return `${day}/${month}/${year}`;
+}

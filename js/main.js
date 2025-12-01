@@ -9,8 +9,8 @@ function renderFormPage() {
     const masterForm = document.createElement("form");
     masterForm.id = "pet-form";
 
-    masterForm.appendChild(PetForm());       // returns fieldsets, not a form
-    masterForm.appendChild(MedicationList()); // returns fieldsets, not a form
+    masterForm.appendChild(PetForm());       
+    masterForm.appendChild(MedicationList()); 
 
     const submitButton = document.createElement("button");
     submitButton.type = "submit";
@@ -21,7 +21,7 @@ function renderFormPage() {
     masterForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const allData = collectAllDataFromPage(); // you’ll build this
+        const allData = collectAllDataFromPage();
 
         const petCard = PetCard(allData);
         renderView(petCard);

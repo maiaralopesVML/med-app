@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/domHelper.js";
+
 export function PetCard(data) {
     const petCard = document.createElement("div");
     petCard.classList.add("pet-card");
@@ -6,12 +8,12 @@ export function PetCard(data) {
     petName.textContent = data.pet.name;
     petCard.appendChild(petName);
 
-    const petDOB = document.createElement("p");
-    petDOB.textContent = `DOB: ${data.pet.dob}`;
-    petCard.appendChild(petDOB);
+  const petDOB = document.createElement("p");
+  petDOB.textContent = `Date of birth: ${formatDate(data.pet.dob)}`;
+  petCard.appendChild(petDOB);
 
     const petCountry = document.createElement("p");
-    petCountry.textContent = `Country: ${data.pet.country}`;
+    petCountry.textContent = `Country of origin: ${data.pet.country}`;
     petCard.appendChild(petCountry);
 
     const conditionsTitle = document.createElement("h3");
