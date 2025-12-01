@@ -14,6 +14,7 @@ export function createInput(labelText, type, id, readOnly = false, value = "") {
   const input = document.createElement("input");
   input.type = type;
   input.id = id;
+  input.name = id;
   if (readOnly) {
     input.readOnly = true;
     input.setAttribute("aria-readonly", "true");
@@ -30,6 +31,7 @@ export function createInput(labelText, type, id, readOnly = false, value = "") {
 export function createInputWithSelect(labelText, type, id, array = []) {
   const container = createInput(labelText, type, id);
   const select = document.createElement("select");
+  select.name = `${id}-unit`;
   array.forEach((option) => {
     const optionElement = document.createElement("option");
     optionElement.value = option;
@@ -50,6 +52,7 @@ export function createInputWithSelectTimeAndDelete(
   const timeInput = document.createElement("input");
   timeInput.type = "time";
   timeInput.id = `${id}-time`;
+  timeInput.name = `${id}-time`;
   const timeLabel = document.createElement("label");
   timeLabel.htmlFor = timeInput.id;
   timeLabel.textContent = "at";

@@ -24,7 +24,7 @@ export function MedicationDetails() {
     createInput("Medication Name", "text", "med-name")
   );
   medicationInfoFieldset.appendChild(
-    createInputWithSelect("Dosage", "number", "med-deosage", ["mg", "ml", "pills"])
+    createInputWithSelect("Dosage", "number", "med-dosage", ["mg", "ml", "pills"])
   );
 
   const dosageFieldset = createFieldset("Dosage Information");

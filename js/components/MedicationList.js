@@ -17,15 +17,9 @@ export function MedicationList() {
     medicationsContainer.appendChild(MedicationDetails());
   });
 
-  const submitButton = document.createElement("button");
-  submitButton.id = "submit-button";
-  submitButton.type = "submit";
-  submitButton.textContent = "Submit";
-
   medicationsContainer.appendChild(MedicationDetails());
   medicationList.appendChild(medicationsContainer);
   medicationList.appendChild(addMedicationButton);
-  medicationList.appendChild(submitButton);
 
   return medicationList;
 }
