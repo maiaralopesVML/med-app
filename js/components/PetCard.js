@@ -78,7 +78,82 @@ export function PetCard(data) {
                 }
                 medicationItem.appendChild(frequecyList);
             }
-        }
+
+
+            if (medication.prescriptions && medication.prescriptions.length > 0) {
+                const prescriptionTitle = document.createElement("h4");
+                prescriptionTitle.textContent = "Prescriptions";
+                medicationItem.appendChild(prescriptionTitle);
+
+                const prescriptionsList = document.createElement("ul");
+                medication.prescriptions.forEach((prescription) => {
+                    const prescriptionItem = document.createElement("li");
+                    prescriptionItem.classList.add("prescription-item");
+                    const summary = document.createElement('p');
+                    const amountText = prescription.amount?.value ? `${prescription.amount.value} ${prescription.amount.unit}`.trim() : 'N/A';
+                    summary.textContent =
+                `Start: ${formatDate(prescription.startDate) || "N/A"}, ` +
+                `Expires: ${formatDate(prescription.expirationDate) || "N/A"}, ` +
+                (amountText ? `Amount: ${amountText}, ` : "") +
+                `Repetitions: ${prescription.repetitions || "N/A"}, ` +
+                `Total: ${prescription.total || "N/A"}, ` +
+                `Next order: ${formatDate(prescription.nextOrderDate) || "N/A"}`;
+            prescriptionItem.appendChild(summary);
+
+            const statusLabel = document.createElement('p');
+            const updateStatusLabel = () => {
+                statusLabel.textContent = `Status: ${prescription.status === 'ended' ? 'Ended' : 'Active'}`;
+            };
+            updateStatusLabel(); // Initial update
+            prescriptionItem.appendChild(statusLabel);
+            const endButton = document.createElement("button");
+            endButton.type = "button";
+            endButton.textContent = "End Prescription";
+
+            const reactivateButton = document.createElement("button");
+            reactivateButton.type = "button";
+            reactivateButton.textContent = "Reactivate Prescription";
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.textContent = "Delete Prescription";
+
+            const syncButtons = () => {
+                const isEnded = prescription.status === "ended";
+                endButton.disabled = isEnded;
+                reactivateButton.disabled = !isEnded;
+            };
+            syncButtons();
+
+            endButton.addEventListener("click", () => {
+                prescription.status = "ended";
+                updateStatusLabel();
+                syncButtons();
+            });
+
+            reactivateButton.addEventListener("click", () => {
+                prescription.status = "active";
+                updateStatusLabel();
+                syncButtons();
+            });
+
+            deleteButton.addEventListener("click", () => {
+                prescriptionItem.remove();
+                const idx = medication.prescriptions.indexOf(prescription);
+                if (idx !== -1) {
+                    medication.prescriptions.splice(idx, 1);
+                }
+            });
+
+            prescriptionItem.appendChild(endButton);
+            prescriptionItem.appendChild(reactivateButton);
+            prescriptionItem.appendChild(deleteButton);
+
+            prescriptionsList.appendChild(prescriptionItem);
+        });
+
+        medicationItem.appendChild(prescriptionsList);
+    }}
         medicationsList.appendChild(medicationItem);
     });
     petCard.appendChild(medicationsList);
