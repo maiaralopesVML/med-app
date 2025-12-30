@@ -1,4 +1,5 @@
 import {
+  createButton,
   createInput,
   createFieldset,
   createInputWithSelect,
@@ -13,18 +14,25 @@ export function MedicationDetails() {
   const medicationContainer = document.createElement("div");
   medicationContainer.id = "medication-container";
 
-
-  const newPrescriptionButton = document.createElement("button");
-  newPrescriptionButton.id = "new-prescription-button";
-  newPrescriptionButton.type = "button";
-  newPrescriptionButton.textContent = "New Prescription";
+  const newPrescriptionButton = createButton(
+    "New Prescription",
+    "new-prescription-button",
+    "button",
+    () => {
+      prescriptionsList.appendChild(PrescriptionDetails());
+    }
+  );
 
   const medicationInfoFieldset = createFieldset("Medication Information");
   medicationInfoFieldset.appendChild(
     createInput("Medication Name", "text", "med-name")
   );
   medicationInfoFieldset.appendChild(
-    createInputWithSelect("Dosage", "number", "med-dosage", ["mg", "ml", "pills"])
+    createInputWithSelect("Dosage", "number", "med-dosage", [
+      "mg",
+      "ml",
+      "pills",
+    ])
   );
 
   const dosageFieldset = createFieldset("Dosage Information");
@@ -60,29 +68,26 @@ export function MedicationDetails() {
     ])
   );
 
-  const addAnotherDoseButton = document.createElement("button");
-  addAnotherDoseButton.id = "add-another-dose-button";
-  addAnotherDoseButton.type = "button";
-  addAnotherDoseButton.textContent = "Add Another Dose";
-  dosageFieldset.appendChild(addAnotherDoseButton);
+  const addAnotherDoseButton = createButton(
+    "Add Another Dose",
+    "add-another-dose-button",
+    "button",
+    () => {
+      dosageFieldset.appendChild(
+        createInputWithSelectTimeAndDelete(
+          "Extra Dose",
+          "number",
+          `med-dose-${dosageFieldset.childElementCount + 1}`,
+          ["mg", "ml", "pills"]
+        )
+      );
+    }
+  );
 
-  addAnotherDoseButton.addEventListener("click", () => {
-    dosageFieldset.appendChild(
-      createInputWithSelectTimeAndDelete(
-        "Extra Dose",
-        "number",
-        `med-dose-${dosageFieldset.childElementCount + 1}`,
-        ["mg", "ml", "pills"]
-      )
-    );
-  });
+  dosageFieldset.appendChild(addAnotherDoseButton);
 
   const prescriptionsList = document.createElement("div");
   prescriptionsList.id = "prescriptions-list";
-
-  newPrescriptionButton.addEventListener("click", () => {
-    prescriptionsList.appendChild(PrescriptionDetails());
-  });
 
   medicationContainer.appendChild(medicationInfoFieldset);
   medicationContainer.appendChild(dosageFieldset);

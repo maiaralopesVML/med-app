@@ -1,4 +1,5 @@
 import {
+  createButton,
   createInput,
   createFieldset,
   createInputWithSelect,
@@ -9,14 +10,70 @@ export function PrescriptionDetails() {
   prescriptionForm.id = "prescription-form";
 
   const today = new Date().toISOString().split("T")[0];
-  const prescriptionEndedButton = document.createElement("button");
-  prescriptionEndedButton.id = "prescription-ended-button";
-  prescriptionEndedButton.type = "button";
-  prescriptionEndedButton.textContent = "Prescription Ended";
-  const deletePrescriptionButton = document.createElement("button");
-  deletePrescriptionButton.id = "delete-prescription-button";
-  deletePrescriptionButton.type = "button";
-  deletePrescriptionButton.textContent = "Delete Prescription";
+
+  const deletePrescriptionButton = createButton(
+    "Delete Prescription",
+    "delete-prescription-button",
+    "button",
+    () => {
+      prescriptionFieldset.remove();
+    }
+  );
+
+  const prescriptionEndedButton = createButton(
+    "Prescription Ended",
+    "prescription-ended-button",
+    "button",
+    () => {
+      prescriptionFieldset.classList.add("inactive");
+
+      const mainLegend = prescriptionFieldset.querySelector("legend");
+      mainLegend.classList.add("inactiveLegend");
+      mainLegend.textContent = "Prescription Ended";
+      prescriptionFieldset
+        .querySelectorAll("input, select, button")
+        .forEach((el) => {
+          if (el.id !== "reactivate-prescription-button") {
+            el.disabled = true;
+            el.setAttribute("aria-disabled", "true");
+          }
+        });
+      reactivatePrescriptionButton.disabled = false;
+      reactivatePrescriptionButton.classList.remove("hidden");
+      reactivatePrescriptionButton.removeAttribute("aria-disabled");
+      reactivatePrescriptionButton.removeAttribute("aria-hidden");
+    }
+  );
+
+  const reactivatePrescriptionButton = createButton(
+    "Reactivate Prescription",
+    "reactivate-prescription-button",
+    "button",
+    () => {
+      prescriptionFieldset.classList.remove("inactive");
+      prescriptionFieldset.removeAttribute("aria-disabled");
+      const mainLegend = prescriptionFieldset.querySelector("legend");
+      mainLegend.classList.remove("inactiveLegend");
+      mainLegend.textContent = "Prescription Details";
+      prescriptionFieldset
+        .querySelectorAll("input, select, button")
+        .forEach((el) => {
+          if (el.id === "reactivate-prescription-button") {
+            el.disabled = true;
+            el.setAttribute("aria-disabled", "true");
+          } else {
+            el.disabled = false;
+            el.removeAttribute("aria-disabled");
+          }
+        });
+      reactivatePrescriptionButton.classList.add("hidden");
+      reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
+    }
+  );
+  reactivatePrescriptionButton.disabled = true;
+  reactivatePrescriptionButton.setAttribute("aria-disabled", "true");
+  reactivatePrescriptionButton.classList.add("hidden");
+  reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
 
   const prescriptionFieldset = createFieldset("Prescription Details");
   prescriptionFieldset.appendChild(
@@ -52,60 +109,6 @@ export function PrescriptionDetails() {
       today
     )
   );
-
-  prescriptionEndedButton.addEventListener("click", () => {
-    prescriptionFieldset.classList.add("inactive");
-
-    const mainLegend = prescriptionFieldset.querySelector("legend");
-    mainLegend.classList.add("inactiveLegend");
-    mainLegend.textContent = "Prescription Ended";
-    prescriptionFieldset
-      .querySelectorAll("input, select, button")
-      .forEach((el) => {
-        if (el.id !== "reactivate-prescription-button") {
-          el.disabled = true;
-          el.setAttribute("aria-disabled", "true");
-        }
-      });
-    reactivatePrescriptionButton.disabled = false;
-    reactivatePrescriptionButton.classList.remove("hidden");
-    reactivatePrescriptionButton.removeAttribute("aria-disabled");
-    reactivatePrescriptionButton.removeAttribute("aria-hidden");
-  });
-
-  const reactivatePrescriptionButton = document.createElement("button");
-  reactivatePrescriptionButton.id = "reactivate-prescription-button";
-  reactivatePrescriptionButton.type = "button";
-  reactivatePrescriptionButton.textContent = "Reactivate Prescription";
-  reactivatePrescriptionButton.disabled = true;
-  reactivatePrescriptionButton.setAttribute("aria-disabled", "true");
-  reactivatePrescriptionButton.classList.add("hidden");
-  reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
-
-  reactivatePrescriptionButton.addEventListener("click", () => {
-    prescriptionFieldset.classList.remove("inactive");
-    prescriptionFieldset.removeAttribute("aria-disabled");
-    const mainLegend = prescriptionFieldset.querySelector("legend");
-    mainLegend.classList.remove("inactiveLegend");
-    mainLegend.textContent = "Prescription Details";
-    prescriptionFieldset
-      .querySelectorAll("input, select, button")
-      .forEach((el) => {
-        if (el.id === "reactivate-prescription-button") {
-          el.disabled = true;
-          el.setAttribute("aria-disabled", "true");
-        } else {
-          el.disabled = false;
-          el.removeAttribute("aria-disabled");
-        }
-      });
-    reactivatePrescriptionButton.classList.add("hidden");
-    reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
-  });
-
-  deletePrescriptionButton.addEventListener("click", () => {
-    prescriptionFieldset.remove();
-  });
 
   prescriptionFieldset.appendChild(prescriptionEndedButton);
   prescriptionFieldset.appendChild(deletePrescriptionButton);

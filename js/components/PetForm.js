@@ -1,5 +1,6 @@
 // PetForm.js — creates and returns the pet form section
 import {
+  createButton,
   createInput,
   createFieldset,
   createInputWithDeleteButton,
@@ -24,19 +25,19 @@ export function PetForm() {
     createInput("Condition", "text", "pet-condition-1")
   );
 
-  const petAdditionalConditionButton = document.createElement("button");
-  petAdditionalConditionButton.id = "add-condition-button";
-  petAdditionalConditionButton.type = "button";
-  petAdditionalConditionButton.textContent = "Add Another Condition";
-
-  petAdditionalConditionButton.addEventListener("click", () => {
-    const newConditionInput = createInputWithDeleteButton(
-      "Condition",
-      "text",
-      `pet-condition-${conditionsFieldset.childElementCount + 1}`
-    );
-    conditionsList.appendChild(newConditionInput);
-  });
+  const petAdditionalConditionButton = createButton(
+    "Add Another Condition",
+    "add-condition-button",
+    "button",
+    () => {
+      const newConditionInput = createInputWithDeleteButton(
+        "Condition",
+        "text",
+        `pet-condition-${conditionsFieldset.childElementCount + 1}`
+      );
+      conditionsList.appendChild(newConditionInput);
+    }
+  );
 
   conditionsFieldset.appendChild(conditionsList);
   conditionsFieldset.appendChild(petAdditionalConditionButton);

@@ -56,11 +56,12 @@ export function createInputWithSelectTimeAndDelete(
   const timeLabel = document.createElement("label");
   timeLabel.htmlFor = timeInput.id;
   timeLabel.textContent = "at";
-  const deleteButton = document.createElement("button");
-  deleteButton.type = "button";
-  deleteButton.id = `delete-${id}-button`;
-  deleteButton.textContent = "Delete";
-  deleteButton.addEventListener("click", () => container.remove());
+  const deleteButton = createButton(
+    "Delete",
+    `delete-${id}-button`,
+    "button",
+    () => container.remove()
+  );
   container.appendChild(timeLabel);
   container.appendChild(timeInput);
   container.appendChild(deleteButton);
@@ -69,12 +70,14 @@ export function createInputWithSelectTimeAndDelete(
 
 export function createInputWithDeleteButton(labelText, type, id) {
   const container = createInput(labelText, type, id);
-  const deleteButton = document.createElement("button");
-  deleteButton.type = "button";
-  deleteButton.id = `delete-${id}-button`;
-  deleteButton.textContent = "Delete";
+  const deleteButton = createButton(
+    "Delete",
+    `delete-${id}-button`,
+    "button",
+    () => container.remove()
+  );
+
   container.appendChild(deleteButton);
-  deleteButton.addEventListener("click", () => container.remove());
   return container;
 }
 
@@ -82,4 +85,26 @@ export function formatDate(dateString) {
   if (!dateString) return "";
   const [year, month, day] = dateString.split("-");
   return `${day}/${month}/${year}`;
+}
+
+export function createList(items, renderItem) {
+  const ul = document.createElement("ul");
+  items?.forEach((item) => {
+    const li = document.createElement("li");
+    renderItem(li, item);
+    ul.appendChild(li);
+  });
+  return ul;
+}
+
+export function createButton(text, id, className, onClick) {
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.textContent = text;
+  if (id) btn.id = id;
+  if (className) {
+    className.split(" ").forEach((c) => btn.classList.add(c));
+  }
+  if (onClick) btn.addEventListener("click", onClick);
+  return btn;
 }
