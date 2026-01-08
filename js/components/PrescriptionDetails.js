@@ -9,8 +9,6 @@ export function PrescriptionDetails() {
   const prescriptionForm = document.createElement("form");
   prescriptionForm.id = "prescription-form";
 
-  const today = new Date().toISOString().split("T")[0];
-
   const deletePrescriptionButton = createButton(
     "Delete Prescription",
     "delete-prescription-button",
@@ -75,6 +73,39 @@ export function PrescriptionDetails() {
   reactivatePrescriptionButton.classList.add("hidden");
   reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
 
+  const amountContainer = createInputWithSelect(
+    "Amount",
+    "number",
+    "med-prescription-amount",
+    ["mg", "ml", "pills", "boxes"]
+  );
+  const amountInput = amountContainer.querySelector("input");
+
+  const repetitionsContainer = createInput(
+    "Repetitions",
+    "number",
+    "med-prescription-repetitions"
+  );
+  const repetitionsInput = repetitionsContainer.querySelector("input");
+
+  const totalContainer = createInput(
+    "Total",
+    "number",
+    "med-prescription-total",
+    true,
+    0
+  );
+  const totalInput = totalContainer.querySelector("input");
+
+  const updateTotal = () => {
+    const amount = parseFloat(amountInput.value) || 0;
+    const repetitions = parseFloat(repetitionsInput.value) || 0;
+    totalInput.value = amount * (1 + repetitions);
+  };
+
+  amountInput.addEventListener("input", updateTotal);
+  repetitionsInput.addEventListener("input", updateTotal);
+
   const prescriptionFieldset = createFieldset("Prescription Details");
   prescriptionFieldset.appendChild(
     createInput("Prescription Start Date", "date", "med-prescription-start")
@@ -86,29 +117,9 @@ export function PrescriptionDetails() {
       "med-prescription-expiration"
     )
   );
-  prescriptionFieldset.appendChild(
-    createInputWithSelect("Amount", "number", "med-prescription-amount", [
-      "mg",
-      "ml",
-      "pills",
-      "boxes",
-    ])
-  );
-  prescriptionFieldset.appendChild(
-    createInput("Repetitions", "number", "med-prescription-repetitions")
-  );
-  prescriptionFieldset.appendChild(
-    createInput("Total", "number", "med-prescription-total", true, 0)
-  );
-  prescriptionFieldset.appendChild(
-    createInput(
-      "Estimated Next Order Date",
-      "date",
-      "med-prescription-next-order",
-      true,
-      today
-    )
-  );
+  prescriptionFieldset.appendChild(amountContainer);
+  prescriptionFieldset.appendChild(repetitionsContainer);
+  prescriptionFieldset.appendChild(totalContainer);
 
   prescriptionFieldset.appendChild(prescriptionEndedButton);
   prescriptionFieldset.appendChild(deletePrescriptionButton);
