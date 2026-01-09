@@ -2,6 +2,7 @@ import { PrescriptionCard } from "./PrescriptionCard.js";
 
 export function MedicationCard(medication) {
   const medicationItem = document.createElement("li");
+  medicationItem.classList.add("medication-item");
 
   const title = document.createElement("h4");
   title.textContent = medication.name || "No Name";
@@ -24,6 +25,7 @@ export function MedicationCard(medication) {
     const { frequency } = medication || {};
     const timePeriod = ["morning", "afternoon", "evening"];
     const frequencyList = document.createElement("ul");
+    frequencyList.classList.add("frequency-list");
     timePeriod.forEach((time) => {
       if (frequency?.[time]) {
         const timeItem = document.createElement("li");
@@ -48,10 +50,12 @@ export function MedicationCard(medication) {
 
     if (medication.prescriptions && medication.prescriptions.length > 0) {
       const prescriptionTitle = document.createElement("h4");
+      prescriptionTitle.classList.add("prescription-title");
       prescriptionTitle.textContent = "Prescriptions";
       medicationItem.appendChild(prescriptionTitle);
 
       const prescriptionsList = document.createElement("ul");
+      prescriptionsList.classList.add("prescriptions-list");
       medication.prescriptions.forEach((prescription) => {
         prescriptionsList.appendChild(
           PrescriptionCard(prescription, medication)

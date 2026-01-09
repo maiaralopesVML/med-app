@@ -10,9 +10,11 @@ import { PrescriptionDetails } from "./PrescriptionDetails.js";
 export function MedicationDetails() {
   const medForm = document.createElement("form");
   medForm.id = "medication-form";
+  medForm.classList.add("medication-form");
 
   const medicationContainer = document.createElement("div");
   medicationContainer.id = "medication-container";
+  medicationContainer.classList.add("medication-container");
 
   const newPrescriptionButton = createButton(
     "New Prescription",
@@ -37,14 +39,17 @@ export function MedicationDetails() {
 
   const dosageFieldset = createFieldset("Dosage Information");
 
+  const oneTimeDoseContainer = document.createElement("div");
+  oneTimeDoseContainer.classList.add("one-time-dose-container");
   const oneTimeDoseLabel = document.createElement("label");
   oneTimeDoseLabel.htmlFor = "med-one-time";
   oneTimeDoseLabel.textContent = "One Time Dose";
   const oneTimeDoseInput = document.createElement("input");
   oneTimeDoseInput.type = "checkbox";
   oneTimeDoseInput.id = "med-one-time";
-  dosageFieldset.appendChild(oneTimeDoseLabel);
-  dosageFieldset.appendChild(oneTimeDoseInput);
+  oneTimeDoseContainer.appendChild(oneTimeDoseLabel);
+  oneTimeDoseContainer.appendChild(oneTimeDoseInput);
+  dosageFieldset.appendChild(oneTimeDoseContainer);
 
   dosageFieldset.appendChild(
     createInputWithSelect("Morning Dose", "number", "med-morning", [
@@ -88,6 +93,7 @@ export function MedicationDetails() {
 
   const prescriptionsList = document.createElement("div");
   prescriptionsList.id = "prescriptions-list";
+  prescriptionsList.classList.add("prescriptions-list");
 
   medicationContainer.appendChild(medicationInfoFieldset);
   medicationContainer.appendChild(dosageFieldset);

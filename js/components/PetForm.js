@@ -8,6 +8,7 @@ import {
 export function PetForm() {
   const petForm = document.createElement("form");
   petForm.id = "pet-form";
+  petForm.classList.add("pet-form");
   const conditionsList = document.createElement("div");
   conditionsList.classList.add("conditions-list");
 

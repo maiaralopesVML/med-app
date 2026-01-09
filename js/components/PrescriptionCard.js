@@ -85,6 +85,7 @@ export function PrescriptionCard(prescription, medication) {
 
   // Summary display
   const summaryP = document.createElement("p");
+  summaryP.classList.add("summary-p");
   const updateSummary = () => {
     const orderItems = ordersList.querySelectorAll(".order-item");
     let totalOrdered = 0;
