@@ -8,9 +8,9 @@
   --teal-light: #e0f2f3;
   --teal-dark: #2d7a80;
 
-  --yellow: #f5e6a3;
-  --yellow-light: #fdf8e1;
-  --yellow-dark: #8a7a30;
+  --yellow: #f4e293;
+  --yellow-light: #f0f0a1;
+  --yellow-dark: #d8b100;
 
   /* Neutrals */
   --white: #ffffff;
@@ -48,6 +48,13 @@ h1 {
   color: var(--purple-dark);
 }
 
+fieldset {
+  background-color: var(--background);
+  border: 1px solid var(--purple);
+  border-radius: var(--radius-md);
+  margin: var(--spacing-md) 0;
+}
+
 fieldset > div {
   margin-bottom: var(--spacing-sm);
 }
@@ -72,6 +79,7 @@ button {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(0);
   transition: transform 0.1s, box-shadow 0.1s;
+  margin-right: var(--spacing-sm);
 }
 
 button:hover {
@@ -87,6 +95,87 @@ button:active {
   transform: translateY(1px);
 }
 
+#delete-prescription-button {
+  position: absolute;
+  right: var(--spacing-lg);
+}
+
+#delete-prescription-button,
+[id^="delete-pet-condition-"],
+.delete-dose-button {
+  background-color: var(--yellow-dark);
+  border: 1px solid var(--yellow-dark);
+  color: var(--grey-dark);
+  margin-left: var(--spacing-sm);
+  border-radius: 9999px;
+  padding: 5px 7px;
+}
+
+#delete-prescription-button:hover,
+[id^="delete-pet-condition-"]:hover,
+.delete-dose-button:hover {
+  background-color: var(--yellow-light);
+  border: 1px solid var(--yellow);
+}
+
+#delete-prescription-button:active,
+[id^="delete-pet-condition-"]:active,
+.delete-dose-button:active {
+  background-color: var(--yellow);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+#reactivate-prescription-button {
+  margin: 0 auto;
+  margin-top: var(--spacing-sm);
+}
+
+#add-medication-button {
+  margin: var(--spacing-sm) 0;
+}
+
+.save-button {
+  width: 50%;
+  display: block;
+  margin: var(--spacing-md) auto;
+  font-size: 20px;
+  background-color: var(--purple-dark);
+  color: var(--white);
+  border: 1px solid var(--purple-dark);
+  border-radius: var(--radius-md);
+}
+
+.save-button:hover {
+  background-color: var(--purple-light);
+  border: 1px solid var(--purple);
+}
+
+.save-button:active {
+  background-color: var(--purple);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+/* Input */
+
+#med-morning,
+#med-afternoon,
+#med-evening,
+[id^="med-dose-amount"] {
+  max-width: 50px;
+  margin-right: var(--spacing-xs);
+}
+
+[id^="med-dose-amount"][id$="-time"] {
+  max-width: 75px;
+}
+
+#med-dosage,
+#med-prescription-amount {
+  margin-right: var(--spacing-xs);
+}
+
 /* Utilities */
 
 .inactive input,
@@ -95,6 +184,12 @@ button:active {
 .inactive button:not(#reactivate-prescription-button) {
   opacity: 0.6;
   pointer-events: none; /*disables interaction */
+}
+
+.inactive button:not(#reactivate-prescription-button) {
+  background-color: var(--grey);
+  color: var(--grey-light);
+  border: 1px solid var(--grey);
 }
 
 .hidden {
