@@ -1,7 +1,8 @@
-import { formatDate } from "../utils/domHelper.js";
+import { formatDate, createButton } from "../utils/domHelper.js";
 import { MedicationCard } from "./MedicationCard.js";
+import { STORAGE_KEY } from "../data/storage.js";
 
-export function PetCard(data) {
+export function PetCard(data, { onClear, onSave } = {}) {
   const petCard = document.createElement("div");
   petCard.classList.add("pet-card");
 
@@ -38,6 +39,24 @@ export function PetCard(data) {
     medicationsList.appendChild(MedicationCard(medication));
   });
   petCard.appendChild(medicationsList);
+
+  const saveChangesButton = createButton("Save Changes", null, "button", () => {
+    if (onSave) {
+      onSave(data);
+    } else {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+  });
+  saveChangesButton.classList.add("save-changes-button");
+
+  const clearAllButton = createButton("Clear All", null, "button", () => {
+    localStorage.removeItem(STORAGE_KEY);
+    if (onClear) {
+      onClear();
+    }
+  });
+  petCard.appendChild(saveChangesButton);
+  petCard.appendChild(clearAllButton);
 
   return petCard;
 }

@@ -1,3 +1,14 @@
+export const trashIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+  viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true">
+  <path d="M3 6h18"/>
+  <path d="M8 6V4h8v2"/>
+  <path d="M6 6l1 16h10l1-16"/>
+  <path d="M10 11v6"/>
+  <path d="M14 11v6"/>
+</svg>`;
+
 export function createFieldset(legendText) {
   const fieldset = document.createElement("fieldset");
   const legend = document.createElement("legend");
@@ -55,13 +66,15 @@ export function createInputWithSelectTimeAndDelete(
   timeInput.name = `${id}-time`;
   const timeLabel = document.createElement("label");
   timeLabel.htmlFor = timeInput.id;
-  timeLabel.textContent = "at";
+  timeLabel.textContent = " at ";
   const deleteButton = createButton(
-    "Delete",
+    "",
     `delete-${id}-button`,
-    "button",
+    "button delete-dose-button",
     () => container.remove()
   );
+  deleteButton.innerHTML = trashIcon;
+  deleteButton.setAttribute("aria-label", "Delete");
   container.appendChild(timeLabel);
   container.appendChild(timeInput);
   container.appendChild(deleteButton);
@@ -70,13 +83,11 @@ export function createInputWithSelectTimeAndDelete(
 
 export function createInputWithDeleteButton(labelText, type, id) {
   const container = createInput(labelText, type, id);
-  const deleteButton = createButton(
-    "Delete",
-    `delete-${id}-button`,
-    "button",
-    () => container.remove()
+  const deleteButton = createButton("", `delete-${id}-button`, "button", () =>
+    container.remove()
   );
-
+  deleteButton.innerHTML = trashIcon;
+  deleteButton.setAttribute("aria-label", "Delete");
   container.appendChild(deleteButton);
   return container;
 }

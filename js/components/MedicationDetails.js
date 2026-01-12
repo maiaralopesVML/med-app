@@ -43,7 +43,7 @@ export function MedicationDetails() {
   oneTimeDoseContainer.classList.add("one-time-dose-container");
   const oneTimeDoseLabel = document.createElement("label");
   oneTimeDoseLabel.htmlFor = "med-one-time";
-  oneTimeDoseLabel.textContent = "One Time Dose";
+  oneTimeDoseLabel.textContent = "One Time";
   const oneTimeDoseInput = document.createElement("input");
   oneTimeDoseInput.type = "checkbox";
   oneTimeDoseInput.id = "med-one-time";
@@ -52,21 +52,21 @@ export function MedicationDetails() {
   dosageFieldset.appendChild(oneTimeDoseContainer);
 
   dosageFieldset.appendChild(
-    createInputWithSelect("Morning Dose", "number", "med-morning", [
+    createInputWithSelect("Morning", "number", "med-morning", [
       "mg",
       "ml",
       "pills",
     ])
   );
   dosageFieldset.appendChild(
-    createInputWithSelect("Afternoon Dose", "number", "med-afternoon", [
+    createInputWithSelect("Afternoon", "number", "med-afternoon", [
       "mg",
       "ml",
       "pills",
     ])
   );
   dosageFieldset.appendChild(
-    createInputWithSelect("Evening Dose", "number", "med-evening", [
+    createInputWithSelect("Evening", "number", "med-evening", [
       "mg",
       "ml",
       "pills",
@@ -80,9 +80,9 @@ export function MedicationDetails() {
     () => {
       dosageFieldset.appendChild(
         createInputWithSelectTimeAndDelete(
-          "Extra Dose",
+          "Extra",
           "number",
-          `med-dose-${dosageFieldset.childElementCount + 1}`,
+          `med-dose-amount-${dosageFieldset.childElementCount + 1}`,
           ["mg", "ml", "pills"]
         )
       );
@@ -97,9 +97,9 @@ export function MedicationDetails() {
 
   medicationContainer.appendChild(medicationInfoFieldset);
   medicationContainer.appendChild(dosageFieldset);
-  medicationContainer.appendChild(newPrescriptionButton);
   prescriptionsList.appendChild(PrescriptionDetails());
   medicationContainer.appendChild(prescriptionsList);
+  medicationContainer.appendChild(newPrescriptionButton);
   medForm.appendChild(medicationContainer);
 
   return medForm;

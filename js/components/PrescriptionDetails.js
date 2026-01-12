@@ -3,6 +3,7 @@ import {
   createInput,
   createFieldset,
   createInputWithSelect,
+  trashIcon,
 } from "../utils/domHelper.js";
 
 export function PrescriptionDetails() {
@@ -10,13 +11,15 @@ export function PrescriptionDetails() {
   prescriptionForm.id = "prescription-form";
 
   const deletePrescriptionButton = createButton(
-    "Delete Prescription",
+    "",
     "delete-prescription-button",
     "button",
     () => {
       prescriptionFieldset.remove();
     }
   );
+  deletePrescriptionButton.innerHTML = trashIcon;
+  deletePrescriptionButton.setAttribute("aria-label", "Delete");
 
   const prescriptionEndedButton = createButton(
     "Prescription Ended",
@@ -38,6 +41,7 @@ export function PrescriptionDetails() {
         });
       reactivatePrescriptionButton.disabled = false;
       reactivatePrescriptionButton.classList.remove("hidden");
+      reactivatePrescriptionButton.style.display = "block";
       reactivatePrescriptionButton.removeAttribute("aria-disabled");
       reactivatePrescriptionButton.removeAttribute("aria-hidden");
     }
@@ -65,6 +69,7 @@ export function PrescriptionDetails() {
           }
         });
       reactivatePrescriptionButton.classList.add("hidden");
+      reactivatePrescriptionButton.style.display = "none";
       reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
     }
   );

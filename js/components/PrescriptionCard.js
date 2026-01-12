@@ -1,4 +1,4 @@
-import { formatDate, createButton } from "../utils/domHelper.js";
+import { formatDate, createButton, trashIcon } from "../utils/domHelper.js";
 import { OrderItem } from "./OrderItem.js";
 
 export function PrescriptionCard(prescription, medication) {
@@ -42,18 +42,15 @@ export function PrescriptionCard(prescription, medication) {
     }
   );
 
-  const deleteButton = createButton(
-    "Delete Prescription",
-    null,
-    "button",
-    () => {
-      prescriptionItem.remove();
-      const idx = medication.prescriptions.indexOf(prescription);
-      if (idx !== -1) {
-        medication.prescriptions.splice(idx, 1);
-      }
+  const deleteButton = createButton("", null, "button", () => {
+    prescriptionItem.remove();
+    const idx = medication.prescriptions.indexOf(prescription);
+    if (idx !== -1) {
+      medication.prescriptions.splice(idx, 1);
     }
-  );
+  });
+  deleteButton.innerHTML = trashIcon;
+  deleteButton.setAttribute("aria-label", "Delete");
 
   const syncButtons = () => {
     const isEnded = prescription.status === "ended";
