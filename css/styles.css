@@ -37,15 +37,54 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
   background-color: #f8f9fa;
   margin: 0;
   padding: 1rem;
 }
 
-h1 {
+.pet-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3,
+h4.prescription-title {
   color: var(--purple-dark);
+}
+
+h2.pet-name {
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  width: 80%;
+  border: 2px solid var(--purple);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm);
+}
+
+.pet-dob,
+.pet-country {
+  color: var(--grey-dark);
+}
+
+h4 {
+  color: var(--teal-dark);
+  margin: 0;
+}
+
+h4.prescription-title {
+  margin-top: var(--spacing-md);
 }
 
 fieldset {
@@ -68,6 +107,27 @@ label {
   font-size: 14px;
 }
 
+.conditions-list {
+  list-style: lower-roman;
+  padding-left: var(--spacing-lg);
+}
+
+.condition-item {
+  color: var(--teal-dark);
+  font-weight: 700;
+}
+
+.medications-list {
+  list-style: none;
+  padding: 0;
+}
+
+.medication-item {
+  border: 1px solid var(--teal);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+}
+
 /* Buttons */
 
 button {
@@ -78,8 +138,11 @@ button {
   padding: var(--spacing-sm) var(--spacing-md);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(0);
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
   margin-right: var(--spacing-sm);
+  font-size: 12px;
 }
 
 button:hover {
