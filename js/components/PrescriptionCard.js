@@ -5,6 +5,7 @@ export function PrescriptionCard(prescription, medication) {
   const prescriptionItem = document.createElement("li");
   prescriptionItem.classList.add("prescription-item");
   const summary = document.createElement("p");
+  summary.classList.add("prescription-summary");
   const amountText = prescription.amount?.value
     ? `${prescription.amount.value} ${prescription.amount.unit}`.trim()
     : "N/A";
@@ -18,6 +19,7 @@ export function PrescriptionCard(prescription, medication) {
   prescriptionItem.appendChild(summary);
 
   const statusLabel = document.createElement("p");
+  statusLabel.classList.add("prescription-status");
   const updateStatusLabel = () => {
     statusLabel.textContent = `Status: ${
       prescription.status === "ended" ? "Ended" : "Active"
@@ -39,7 +41,7 @@ export function PrescriptionCard(prescription, medication) {
       prescription.status = "active";
       updateStatusLabel();
       syncButtons();
-    }
+    },
   );
 
   const deleteButton = createButton("", null, "button", () => {
@@ -69,6 +71,7 @@ export function PrescriptionCard(prescription, medication) {
 
   const ordersTitle = document.createElement("h5");
   ordersTitle.textContent = "Orders";
+  ordersTitle.classList.add("orders-title");
   ordersSection.appendChild(ordersTitle);
 
   const ordersList = document.createElement("ul");

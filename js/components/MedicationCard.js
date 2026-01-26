@@ -58,7 +58,7 @@ export function MedicationCard(medication) {
       prescriptionsList.classList.add("prescriptions-list");
       medication.prescriptions.forEach((prescription) => {
         prescriptionsList.appendChild(
-          PrescriptionCard(prescription, medication)
+          PrescriptionCard(prescription, medication),
         );
       });
 

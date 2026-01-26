@@ -16,7 +16,7 @@ export function PrescriptionDetails() {
     "button",
     () => {
       prescriptionFieldset.remove();
-    }
+    },
   );
   deletePrescriptionButton.innerHTML = trashIcon;
   deletePrescriptionButton.setAttribute("aria-label", "Delete");
@@ -44,7 +44,7 @@ export function PrescriptionDetails() {
       reactivatePrescriptionButton.style.display = "block";
       reactivatePrescriptionButton.removeAttribute("aria-disabled");
       reactivatePrescriptionButton.removeAttribute("aria-hidden");
-    }
+    },
   );
 
   const reactivatePrescriptionButton = createButton(
@@ -71,7 +71,7 @@ export function PrescriptionDetails() {
       reactivatePrescriptionButton.classList.add("hidden");
       reactivatePrescriptionButton.style.display = "none";
       reactivatePrescriptionButton.setAttribute("aria-hidden", "true");
-    }
+    },
   );
   reactivatePrescriptionButton.disabled = true;
   reactivatePrescriptionButton.setAttribute("aria-disabled", "true");
@@ -82,14 +82,14 @@ export function PrescriptionDetails() {
     "Amount",
     "number",
     "med-prescription-amount",
-    ["mg", "ml", "pills", "boxes"]
+    ["mg", "ml", "pills", "boxes"],
   );
   const amountInput = amountContainer.querySelector("input");
 
   const repetitionsContainer = createInput(
     "Repetitions",
     "number",
-    "med-prescription-repetitions"
+    "med-prescription-repetitions",
   );
   const repetitionsInput = repetitionsContainer.querySelector("input");
 
@@ -98,7 +98,7 @@ export function PrescriptionDetails() {
     "number",
     "med-prescription-total",
     true,
-    0
+    0,
   );
   const totalInput = totalContainer.querySelector("input");
 
@@ -113,14 +113,18 @@ export function PrescriptionDetails() {
 
   const prescriptionFieldset = createFieldset("Prescription Details");
   prescriptionFieldset.appendChild(
-    createInput("Prescription Start Date", "date", "med-prescription-start")
+    createInput("Pharmacy", "text", "med-pharmacy"),
+  );
+
+  prescriptionFieldset.appendChild(
+    createInput("Prescription Start Date", "date", "med-prescription-start"),
   );
   prescriptionFieldset.appendChild(
     createInput(
       "Prescription Expiration Date",
       "date",
-      "med-prescription-expiration"
-    )
+      "med-prescription-expiration",
+    ),
   );
   prescriptionFieldset.appendChild(amountContainer);
   prescriptionFieldset.appendChild(repetitionsContainer);
