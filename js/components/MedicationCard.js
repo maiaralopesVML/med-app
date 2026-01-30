@@ -1,6 +1,6 @@
 import { PrescriptionCard } from "./PrescriptionCard.js";
 
-export function MedicationCard(medication) {
+export function MedicationCard(medication, rootData) {
   const medicationItem = document.createElement("li");
   medicationItem.classList.add("medication-item");
 
@@ -58,7 +58,7 @@ export function MedicationCard(medication) {
       prescriptionsList.classList.add("prescriptions-list");
       medication.prescriptions.forEach((prescription) => {
         prescriptionsList.appendChild(
-          PrescriptionCard(prescription, medication),
+          PrescriptionCard(prescription, medication, rootData),
         );
       });
 

@@ -44,7 +44,7 @@ export function PetCard(data, { onClear, onSave } = {}) {
   const medicationsList = document.createElement("ul");
   medicationsList.classList.add("medications-list");
   data.medications?.forEach((medication) => {
-    medicationsList.appendChild(MedicationCard(medication));
+    medicationsList.appendChild(MedicationCard(medication, data));
   });
   petCard.appendChild(medicationsList);
 

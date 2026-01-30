@@ -1,7 +1,8 @@
 import { formatDate, createButton, trashIcon } from "../utils/domHelper.js";
 import { OrderItem } from "./OrderItem.js";
+import { STORAGE_KEY } from "../data/storage.js";
 
-export function PrescriptionCard(prescription, medication) {
+export function PrescriptionCard(prescription, medication, rootData) {
   const prescriptionItem = document.createElement("li");
   prescriptionItem.classList.add("prescription-item");
   const summary = document.createElement("p");
@@ -112,6 +113,26 @@ export function PrescriptionCard(prescription, medication) {
     updateSummary();
   });
   ordersSection.appendChild(addOrderButton);
+
+  // after initializing orders array
+  prescription.orders.forEach((order) => {
+    const item = OrderItem(updateSummary, updateSummary, order); // update OrderItem to accept initial values
+    ordersList.appendChild(item);
+  });
+  updateSummary();
+
+  const saveOrdersButton = createButton("Save Orders", null, "button", () => {
+    const orderItems = ordersList.querySelectorAll(".order-item");
+    prescription.orders = Array.from(orderItems).map((item) => item.getData());
+    updateSummary();
+
+    // Persist immediately if rootData is provided (rendered from saved data)
+    if (rootData) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(rootData));
+    }
+    // Otherwise, the form flow will collect on final Save
+  });
+  ordersSection.appendChild(saveOrdersButton);
 
   prescriptionItem.appendChild(ordersSection);
 
