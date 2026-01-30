@@ -5,17 +5,21 @@ import { STORAGE_KEY } from "../data/storage.js";
 export function PrescriptionCard(prescription, medication, rootData) {
   const prescriptionItem = document.createElement("li");
   prescriptionItem.classList.add("prescription-item");
+  const todayIso = new Date().toISOString().split("T")[0];
+  const today = formatDate(todayIso); // DD/MM/YYYY
   const summary = document.createElement("p");
   summary.classList.add("prescription-summary");
   const amountText = prescription.amount?.value
     ? `${prescription.amount.value} ${prescription.amount.unit}`.trim()
     : "N/A";
-  summary.textContent =
-    `Start: ${formatDate(prescription.startDate) || "N/A"}, ` +
-    `Expires: ${formatDate(prescription.expirationDate) || "N/A"}, ` +
-    (amountText ? `Amount: ${amountText}, ` : "") +
-    `Repetitions: ${prescription.repetitions || "N/A"}, ` +
-    `Total: ${prescription.total || "N/A"}, `;
+  const summaryLines = [
+    `Starts: ${formatDate(prescription.startDate) || today}`,
+    `Expires: ${formatDate(prescription.expirationDate) || today}`,
+    amountText ? `Amount: ${amountText}` : null,
+    `Repetitions: ${prescription.repetitions || "N/A"}`,
+    `Total: ${prescription.total || "N/A"}`,
+  ].filter(Boolean);
+  summary.innerHTML = summaryLines.join("<br>");
 
   prescriptionItem.appendChild(summary);
 
@@ -28,22 +32,17 @@ export function PrescriptionCard(prescription, medication, rootData) {
   };
   updateStatusLabel(); // Initial update
   prescriptionItem.appendChild(statusLabel);
-  const endButton = createButton("End Prescription", null, "button", () => {
+  const endButton = createButton("End", null, "button", () => {
     prescription.status = "ended";
     updateStatusLabel();
     syncButtons();
   });
 
-  const reactivateButton = createButton(
-    "Reactivate Prescription",
-    null,
-    "button",
-    () => {
-      prescription.status = "active";
-      updateStatusLabel();
-      syncButtons();
-    },
-  );
+  const reactivateButton = createButton("Reactivate", null, "button", () => {
+    prescription.status = "active";
+    updateStatusLabel();
+    syncButtons();
+  });
 
   const deleteButton = createButton("", null, "button", () => {
     prescriptionItem.remove();
@@ -53,6 +52,7 @@ export function PrescriptionCard(prescription, medication, rootData) {
     }
   });
   deleteButton.innerHTML = trashIcon;
+  deleteButton.classList.add("delete-button");
   deleteButton.setAttribute("aria-label", "Delete");
 
   const syncButtons = () => {
@@ -100,9 +100,12 @@ export function PrescriptionCard(prescription, medication, rootData) {
     const orderedAmount = totalOrdered * amount;
     const remainingTimes = totalTimes - totalOrdered;
     const remainingAmount = remainingTimes * amount;
-    summaryP.textContent =
-      `Ordered: ${totalOrdered} times | total = ${orderedAmount} | ` +
-      `Remaining: ${remainingTimes} repetitions | total = ${remainingAmount}`;
+
+    const summaryLines = [
+      `Ordered: ${totalOrdered} times | Total = ${orderedAmount}`,
+      `Remaining: ${remainingTimes} repetitions | Total = ${remainingAmount}`,
+    ];
+    summaryP.innerHTML = summaryLines.join("<br>");
   };
   updateSummary();
   ordersSection.appendChild(summaryP);

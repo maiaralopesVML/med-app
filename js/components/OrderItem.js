@@ -1,10 +1,11 @@
-import { createInput, createButton } from "../utils/domHelper.js";
+import { createInput, createButton, formatDate } from "../utils/domHelper.js";
 
 export function OrderItem(onDelete, onUpdate, initial = {}) {
   const container = document.createElement("div");
   container.classList.add("order-item");
 
-  const today = new Date().toISOString().split("T")[0];
+  const todayIso = new Date().toISOString().split("T")[0];
+  const today = formatDate(todayIso); // DD/MM/YYYY
   const dateContainer = createInput("Date", "date", `order-date-${Date.now()}`);
   const dateInput = dateContainer.querySelector("input");
   dateInput.value = initial.date || today;

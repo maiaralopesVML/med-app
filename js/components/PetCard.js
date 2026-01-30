@@ -63,6 +63,8 @@ export function PetCard(data, { onClear, onSave } = {}) {
       onClear();
     }
   });
+  clearAllButton.classList.add("clear-all-button");
+
   petCard.appendChild(saveChangesButton);
   petCard.appendChild(clearAllButton);
 
