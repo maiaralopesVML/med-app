@@ -59,7 +59,8 @@ body {
 h1,
 h2,
 h3,
-h4.prescription-title {
+h4.prescription-title,
+h5 {
   color: var(--purple-dark);
 }
 
@@ -117,7 +118,8 @@ label {
   font-weight: 700;
 }
 
-.medications-list {
+.medications-list,
+.prescriptions-list {
   list-style: none;
   padding: 0;
 }
@@ -126,6 +128,15 @@ label {
   border: 1px solid var(--teal);
   border-radius: var(--radius-sm);
   padding: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+h5.orders-title {
+  font-size: 16px;
+}
+
+.prescription-status {
+  color: var(--grey-dark);
 }
 
 /* Buttons */
@@ -165,7 +176,9 @@ button:active {
 
 #delete-prescription-button,
 [id^="delete-pet-condition-"],
-.delete-dose-button {
+.delete-dose-button,
+.delete-button,
+.clear-all-button {
   background-color: var(--yellow-dark);
   border: 1px solid var(--yellow-dark);
   color: var(--grey-dark);
@@ -176,17 +189,25 @@ button:active {
 
 #delete-prescription-button:hover,
 [id^="delete-pet-condition-"]:hover,
-.delete-dose-button:hover {
+.delete-dose-button:hover,
+.delete-button:hover,
+.clear-all-button:hover {
   background-color: var(--yellow-light);
   border: 1px solid var(--yellow);
 }
 
 #delete-prescription-button:active,
 [id^="delete-pet-condition-"]:active,
-.delete-dose-button:active {
+.delete-dose-button:active,
+.delete-button:active,
+.clear-all-button:active {
   background-color: var(--yellow);
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
   transform: translateY(1px);
+}
+
+.clear-all-button {
+  padding: var(--spacing-sm) var(--spacing-md) !important;
 }
 
 #reactivate-prescription-button {
