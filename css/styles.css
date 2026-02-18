@@ -85,7 +85,7 @@ h4 {
 }
 
 h4.prescription-title {
-  margin-top: var(--spacing-md);
+  margin: var(--spacing-md) 0;
 }
 
 fieldset {
@@ -321,4 +321,63 @@ button:active {
 .modal #prescription-ended-button,
 .modal #delete-prescription-button {
   display: none;
+}
+
+/* Accordion */
+
+.accordion {
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+}
+
+.accordion-header {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: #f7f8fa;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.accordion-body {
+  display: none;
+  padding: 12px 14px 14px;
+}
+
+.accordion-body.open {
+  display: block;
+}
+
+.status-chip {
+  margin-left: auto;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #e6f4ff;
+  color: #0b69c8;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-chip.ended {
+  background: #ffe7e7;
+  color: #c00;
+}
+
+.order-accordion .accordion-header {
+  background: #eef2f6;
+  font-weight: 500;
+}
+
+.orders-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
 }
