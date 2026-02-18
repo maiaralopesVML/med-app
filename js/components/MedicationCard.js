@@ -1,4 +1,5 @@
 import { PrescriptionCard } from "./PrescriptionCard.js";
+import { PrescriptionModal } from "./PrescriptionModal.js";
 
 export function MedicationCard(medication, rootData) {
   const medicationItem = document.createElement("li");
@@ -48,22 +49,42 @@ export function MedicationCard(medication, rootData) {
       medicationItem.appendChild(frequencyList);
     }
 
-    if (medication.prescriptions && medication.prescriptions.length > 0) {
-      const prescriptionTitle = document.createElement("h4");
-      prescriptionTitle.classList.add("prescription-title");
-      prescriptionTitle.textContent = "Prescriptions";
-      medicationItem.appendChild(prescriptionTitle);
+    // PRESCRIPTIONS
+    if (!medication.prescriptions) medication.prescriptions = [];
 
-      const prescriptionsList = document.createElement("ul");
-      prescriptionsList.classList.add("prescriptions-list");
-      medication.prescriptions.forEach((prescription) => {
-        prescriptionsList.appendChild(
-          PrescriptionCard(prescription, medication, rootData),
-        );
+    // if (medication.prescriptions && medication.prescriptions.length > 0) {
+    const prescriptionTitle = document.createElement("h4");
+    prescriptionTitle.classList.add("prescription-title");
+    prescriptionTitle.textContent = "Prescriptions";
+    medicationItem.appendChild(prescriptionTitle);
+
+    const prescriptionsList = document.createElement("ul");
+    prescriptionsList.classList.add("prescriptions-list");
+    medication.prescriptions.forEach((prescription) => {
+      prescriptionsList.appendChild(
+        PrescriptionCard(prescription, medication, rootData),
+      );
+    });
+
+    medicationItem.appendChild(prescriptionsList);
+
+    // replace current New Prescription button logic
+    const newPrescriptionButton = document.createElement("button");
+    newPrescriptionButton.type = "button";
+    newPrescriptionButton.classList.add("new-prescription-button");
+    newPrescriptionButton.textContent = "New Prescription";
+    newPrescriptionButton.addEventListener("click", () => {
+      const modal = PrescriptionModal({
+        onSave: (newPrescription) => {
+          medication.prescriptions.push(newPrescription);
+          prescriptionsList.appendChild(
+            PrescriptionCard(newPrescription, medication, rootData),
+          );
+        },
       });
-
-      medicationItem.appendChild(prescriptionsList);
-    }
+      document.body.appendChild(modal);
+    });
+    medicationItem.appendChild(newPrescriptionButton);
   }
 
   return medicationItem;

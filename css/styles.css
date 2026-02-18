@@ -279,3 +279,46 @@ button:active {
 .hidden {
   display: none;
 }
+
+/* Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 0 12px;
+  width: min(520px, 90vw);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.modal .inactiveLegend {
+  color: #999;
+}
+
+.modal h3 {
+  margin: 0;
+}
+
+.modal #prescription-ended-button,
+.modal #delete-prescription-button {
+  display: none;
+}
