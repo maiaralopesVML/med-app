@@ -356,28 +356,41 @@ button:active {
   display: block;
 }
 
+button.accordion-header span {
+  color: var(--grey-dark);
+}
+
 .status-chip {
   margin-left: auto;
   padding: 2px 8px;
   border-radius: 999px;
   background: #e6f4ff;
-  color: #0b69c8;
+  color: #0b69c8 !important;
   font-size: 12px;
   font-weight: 600;
 }
 
 .status-chip.ended {
   background: #ffe7e7;
-  color: #c00;
-}
-
-.order-accordion .accordion-header {
-  background: #eef2f6;
-  font-weight: 500;
+  color: #c00 !important;
 }
 
 .orders-list {
   list-style: none;
   padding: 0;
   margin: 8px 0;
+}
+
+.order-accordion .accordion-header {
+  background: #eef2f6;
+  font-weight: 500;
+  padding: 10px 12px;
+}
+
+.order-accordion .accordion-body {
+  border-top: 1px solid #e2e2e2;
+}
+
+.order-accordion.open .accordion-body {
+  display: block;
 }

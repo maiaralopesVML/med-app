@@ -1,4 +1,6 @@
 import { formatDate, createButton, trashIcon } from "../utils/domHelper.js";
+import { OrderItem } from "./OrderItem.js";
+import { STORAGE_KEY } from "../data/storage.js";
 
 export function PrescriptionCard(prescription, medication, rootData) {
   const prescriptionItem = document.createElement("li");
@@ -91,21 +93,28 @@ export function PrescriptionCard(prescription, medication, rootData) {
   const summaryP = document.createElement("p");
   summaryP.classList.add("summary-p");
   const updateSummary = () => {
-    const orderItems = ordersList.querySelectorAll(".order-accordion");
-    let totalOrdered = 0;
-    orderItems.forEach((item) => {
+    const orderAccordions = ordersList.querySelectorAll(".order-accordion");
+    const totalOrders = orderAccordions.length;
+
+    let orderedAmount = 0;
+    orderAccordions.forEach((item) => {
       const data = item.querySelector(".order-item")?.getData();
-      totalOrdered += data?.quantity || 0;
+      orderedAmount += data?.quantity || 0;
     });
-    const amount = prescription.amount?.value || 0;
+
+    const amountPerTime = parseFloat(prescription.amount?.value) || 0;
     const repetitions = parseInt(prescription.repetitions, 10) || 0;
     const totalTimes = 1 + repetitions;
-    const orderedAmount = totalOrdered * amount;
-    const remainingTimes = totalTimes - totalOrdered;
-    const remainingAmount = remainingTimes * amount;
+
+    const remainingTimes = Math.max(totalTimes - totalOrders, 0);
+    const remainingAmount = Math.max(
+      totalTimes * amountPerTime - orderedAmount,
+      0,
+    );
+
     summaryP.innerHTML = [
-      `Ordered: ${totalOrdered} times | Total = ${orderedAmount}`,
-      `Remaining: ${remainingTimes} repetitions | Total = ${remainingAmount}`,
+      `Ordered: ${totalOrders} times | Total = ${orderedAmount}`,
+      `Remaining: ${remainingTimes} times | Total = ${remainingAmount}`,
     ].join("<br>");
   };
   updateSummary();
@@ -114,50 +123,148 @@ export function PrescriptionCard(prescription, medication, rootData) {
   const makeOrderAccordion = (orderData = {}) => {
     const li = document.createElement("li");
     li.classList.add("order-accordion", "accordion");
+
     const orderHeader = document.createElement("button");
     orderHeader.type = "button";
     orderHeader.classList.add("accordion-header");
+    orderHeader.setAttribute("aria-expanded", "false");
     const title = document.createElement("span");
-    title.textContent = `Order — ${orderData.date || "New"}`;
+    const displayDate =
+      (orderData.date && formatDate(orderData.date)) ||
+      today ||
+      formatDate(new Date().toISOString().split("T")[0]);
+    title.textContent = `Order — ${displayDate}`;
     orderHeader.appendChild(title);
 
     const orderBody = document.createElement("div");
     orderBody.classList.add("accordion-body");
 
+    // Build form and view containers
     const orderItem = OrderItem(updateSummary, updateSummary, orderData);
-    orderBody.appendChild(orderItem);
+    const internalDelete = orderItem.querySelector("button");
+    if (internalDelete) internalDelete.remove();
 
-    orderHeader.addEventListener("click", () => {
-      orderBody.classList.toggle("open");
+    const orderFormWrapper = document.createElement("div");
+    orderFormWrapper.appendChild(orderItem);
+
+    const orderView = document.createElement("div");
+    orderView.classList.add("order-view", "hidden");
+
+    const renderView = (data) => {
+      orderView.innerHTML = `
+      <p>Date: ${formatDate(data.date) || "N/A"}</p>
+      <p>Quantity: ${data.quantity ?? 0}</p>
+    `;
+      title.textContent = `Order — ${formatDate(data.date) || today}`;
+    };
+
+    const setMode = (mode) => {
+      const isView = mode === "view";
+      orderFormWrapper.classList.toggle("hidden", isView);
+      orderView.classList.toggle("hidden", !isView);
+      saveOrderBtn.classList.toggle("hidden", isView);
+      editOrderBtn.classList.toggle("hidden", !isView);
+      deleteOrderBtn.disabled = !isView;
+    };
+
+    const saveOrderBtn = createButton("Save Order", null, "button", () => {
+      const data = orderItem.getData
+        ? orderItem.getData()
+        : { date: "", quantity: 0 };
+      const idx = Array.from(ordersList.children).indexOf(li);
+      if (idx >= 0) prescription.orders[idx] = data;
+      else prescription.orders.push(data);
+      renderView(data);
+      setMode("view");
+      updateSummary();
+      if (rootData) localStorage.setItem(STORAGE_KEY, JSON.stringify(rootData));
     });
+
+    const editOrderBtn = createButton("Edit Order", null, "button", () => {
+      setMode("edit");
+    });
+    editOrderBtn.classList.add("hidden");
+
+    const deleteOrderBtn = createButton(
+      "",
+      null,
+      "button delete-button",
+      () => {
+        const idx = Array.from(ordersList.children).indexOf(li);
+        if (idx >= 0) prescription.orders.splice(idx, 1);
+        li.remove();
+        updateSummary();
+        if (rootData)
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(rootData));
+      },
+    );
+    deleteOrderBtn.innerHTML = trashIcon;
+    deleteOrderBtn.setAttribute("aria-label", "Delete");
+    deleteOrderBtn.disabled = true;
+
+    // Initial mode
+    if (orderData.date || orderData.quantity) {
+      renderView(orderData);
+      setMode("view");
+      deleteOrderBtn.disabled = false;
+      editOrderBtn.classList.remove("hidden");
+    } else {
+      setMode("edit"); // new order
+    }
+
+    // Accordion toggle
+    orderHeader.addEventListener("click", () => {
+      const isOpen = orderBody.classList.toggle("open");
+      li.classList.toggle("open", isOpen);
+      orderHeader.setAttribute("aria-expanded", isOpen);
+    });
+
+    // Assemble
+    orderBody.appendChild(orderFormWrapper);
+    orderBody.appendChild(orderView);
+    orderBody.appendChild(saveOrderBtn);
+    orderBody.appendChild(editOrderBtn);
+    orderBody.appendChild(deleteOrderBtn);
 
     li.append(orderHeader, orderBody);
     return li;
   };
 
-  const addOrderButton = createButton("Add Order", null, "button", () => {
-    const accordion = makeOrderAccordion();
+  const renderOrderAccordion = (orderData = {}) => {
+    const accordion = makeOrderAccordion(orderData);
     ordersList.appendChild(accordion);
-    accordion.querySelector(".accordion-body").classList.add("open");
+    return accordion;
+  };
+
+  // Render existing orders (if any)
+  prescription.orders.forEach((order) => renderOrderAccordion(order));
+
+  // If none, create one empty and open it
+  if (ordersList.childElementCount === 0) {
+    const first = renderOrderAccordion();
+    const body = first.querySelector(".accordion-body");
+    first.classList.add("open");
+    body.classList.add("open");
+    first
+      .querySelector(".accordion-header")
+      .setAttribute("aria-expanded", "true");
+  }
+
+  // Add Order button (uses the helper and opens the new one)
+  const addOrderButton = createButton("Add Order", null, "button", () => {
+    const accordion = renderOrderAccordion();
+    const body = accordion.querySelector(".accordion-body");
+    accordion.classList.add("open");
+    body.classList.add("open");
+    accordion
+      .querySelector(".accordion-header")
+      .setAttribute("aria-expanded", "true");
     updateSummary();
   });
   ordersSection.appendChild(addOrderButton);
 
-  prescription.orders.forEach((order) => {
-    const accordion = makeOrderAccordion(order);
-    ordersList.appendChild(accordion);
-  });
+  // (keep Save Orders button and updateSummary calls as they are, after this block)
   updateSummary();
-
-  const saveOrdersButton = createButton("Save Orders", null, "button", () => {
-    const orderItems = ordersList.querySelectorAll(".order-item");
-    prescription.orders = Array.from(orderItems).map((item) => item.getData());
-    updateSummary();
-    if (rootData) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(rootData));
-    }
-  });
-  ordersSection.appendChild(saveOrdersButton);
 
   body.appendChild(ordersSection);
 
